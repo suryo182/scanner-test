@@ -158,6 +158,7 @@
     let html5QrCode = new Html5Qrcode("preview");
     let currentCameraIndex = 0; // Index for the currently used camera
     let cameras = []; // Array to store all detected cameras
+    console.log({html5QrCode})
 
     // Event listener when a QR code is successfully scanned
     function onScanSuccess(content) {

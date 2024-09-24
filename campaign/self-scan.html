@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self Scanning</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="../img/awhl.svg">
+
+<!-- Tambahkan library Instascan -->
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+        height: 90vh;
+        margin: 0;
+    }
+    header {
+        height: 10vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0px;
+        padding: 8px;
+    }
+    main {
+        margin: 0;
+        display: flex;
+        flex-direction: row;
+        height: 90vh;
+        width: 100vw;
+    }
+    .left-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 32px;
+        width: 40vw;
+        text-align: center;
+        gap: 32px;
+    }
+    .event-title {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    #announcement {
+        font-size: 40px;
+    }
+    .input-manual {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+        }
+        .input-manual input {
+            flex-grow: 1;
+        }
+    .result {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        transition: all 0.5s ease-in-out;
+    }
+    .result img {
+        width: 50px;
+    }
+    .result-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    #ticketCode {
+        font-size: 32px;
+    }
+    #thankyou {
+        font-size: 40px;
+    }
+    #timer {
+        font-size: 10px;
+        text-align: center;
+    }
+    .right-column {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 60vw;
+    }
+    #popup {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 8px 24px;
+        width: 100vw;
+        background-color: white;
+        filter: invert(100);
+    }
+    .camera-arrow {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+    }
+</style>
+
+</head>
+
+<body>
+    <!-- <header id="popup">
+        <div class="camera-arrow">
+            <p>Camera</p>
+            <img src="../img/arrow-camera.svg" alt="">
+            <p>is there</p>
+        </div>
+        <p>Put your phone in front of the camera to scan your QR code to enter the event</p>
+    </header> -->
+    <main>
+        <section class="left-column">
+            <img src="../img/awhl.svg" alt="">
+            <div class="event-title">
+                <h1>Brand Yearly Anniversary</h1>
+                <h2>1 November 2024 : 7.00 PM - 10.00 PM</h2>
+                </div>
+            <p id="announcement">Self Scanning Ticket</p>
+            <div class="input-manual" id="manual-div">
+                <input id="manualInput" type="number" placeholder="Enter Ticket Code">
+                <button class="buttonPrimary" onclick="showResult(); document.getElementById('ticketCode').innerText = manualInput.value;">Submit</button>
+            </div>
+            <div class="result" id="result" style="display: none;">
+                <h2 id="thankyou">Thank you, enjoy the event</h2>
+                <img src="../img/tick.svg" alt="">
+                <div class="result-text">
+                    <p>Ticket code</p>
+                    <h2 id="ticketCode">123</h2>
+                    <h2 id="ticketHolder">Customer Name</h2>
+                    <p>successfully registered</p>
+                </div>
+                <p id="timer">this info will be disappear automatically in 3s</p>
+            </div>
+        </section>
+        <section class="right-column">
+            <video id="preview" style="width: 100%; height: 100%;"></video> <!-- Preview kamera akan tampil di sini -->
+        </section>
+    </main>
+</body>
+<script>
+    let html5QrCode = new Html5Qrcode("preview");
+    let currentCameraIndex = 0; // Index for the currently used camera
+    let cameras = []; // Array to store all detected cameras
+
+    // Event listener when a QR code is successfully scanned
+    function onScanSuccess(content) {
+        console.log('QR Code detected: ', content);
+        document.getElementById('manualInput').value = content;
+        document.getElementById('ticketCode').innerText = content;
+        showResult();  // Call the result display function
+    }
+
+    // Function to handle scan failures (optional)
+    function onScanFailure(error) {
+        console.warn(`QR Code scan failed: ${error}`);
+    }
+
+    // Fetch available cameras and start with the back camera if available
+    Html5Qrcode.getCameras().then(function(cameraList) {
+        cameras = cameraList; // Store the list of cameras
+        if (cameras.length > 0) {
+            // Look for the back camera
+            let backCamera = cameras.find(cam => cam.label.toLowerCase().includes('back'));
+            if (backCamera) {
+                html5QrCode.start(backCamera.id, {
+                    fps: 10,    // Scans per second
+                    qrbox: 250  // Display scanning box of 250px
+                }, onScanSuccess, onScanFailure);  // Start with the back camera if found
+            } else {
+                html5QrCode.start(cameras[0].id, {
+                    fps: 10,
+                    qrbox: 250
+                }, onScanSuccess, onScanFailure);  // Use the first camera if no back camera is found
+            }
+        } else {
+            alert('No cameras found. Please ensure your camera is connected.');
+            console.error('No cameras found.');
+        }
+    }).catch(function(e) {
+        alert('Error accessing camera: ' + e);
+        console.error('Error accessing camera: ', e);
+    });
+
+    // Function to show the result after scanning
+    function showResult() {
+        document.getElementById('announcement').style.display = 'none';
+        document.getElementById('manual-div').style.display = 'none';
+        document.getElementById('result').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('manualInput').value = '';
+            document.getElementById('announcement').style.display = 'flex';
+            document.getElementById('manual-div').style.display = 'flex';
+        }, 3000);
+    }
+</script>
+</html>

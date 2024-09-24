@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Ticket</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="../img/awhl.svg">
+    
+    <!-- Tambahkan library Instascan -->
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 5% 2%;
+            background-color: white;
+        }
+        #logo {
+            width: 100px;
+        }
+        h1 {
+            margin: 0;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .iconBack {
+            position: absolute;
+            left: 5%;
+            top: 5%;
+            width: 24px;
+            height: 24px;
+        }
+        .event-title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            align-items: center;
+            justify-content: center;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 90%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 5%;
+        }
+        .camera-button {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            width: 100%;
+        }
+        .input-manual {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+        }
+        .input-manual input {
+            flex-grow: 1;
+        }
+        video {
+            width: 100%;
+            height: 100vh;
+            border: 2px solid #000;
+        }
+        section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            height: 100vh;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        .popup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            padding: 24px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        .popup-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        #ticketCode {
+            font-size: 32px;
+        }
+        #timer {
+            font-size: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img id="logo" src="../img/awhl.svg" alt="">
+        <h1>Scan Ticket</h1>
+        <div class="event-title">
+            <h2>Brand Yearly Anniversary</h2>
+            <p>1 November 2024 : 7.00 PM - 10.00 PM</p>
+        </div>
+    </header>
+    <main>
+        <video id="preview" style="width: 100%; height: 100%;"></video> <!-- Preview kamera akan tampil di sini -->
+    </main>
+    <footer>
+        <div class="camera-button">
+            <div class="buttonOutline buttonSmall" onclick="changeCamera()" style="flex-grow: 1;">
+                <img src="../img/camera.svg" alt="">
+                <a>Change Camera</a></div>
+            <div class="buttonPrimary" onclick="window.location.href = 'scan.html'">Scan Other Ticket</div>
+        </div>
+        <div class="input-manual">
+            <input id="manualInput" type="number" placeholder="Enter Ticket Code">
+            <button class="buttonPrimary" onclick="showPopup(); document.getElementById('ticketCode').innerText = manualInput.value;">Submit</button>
+        </div>
+    </footer>
+
+    <section id="overlay" style="display: none">
+        <div class="popup" id="popupSuccess" style="display: none">
+            <img src="../img/tick.svg" alt="">
+            <div class="popup-text">
+                <p>Ticket code</p>
+                <h2 id="ticketCode">123</h2>
+                <h2 id="ticketHolder">Customer Name</h2>
+                <p>successfully registered</p>
+            </div>
+            <button class="buttonPrimary" onclick="closePopup()">OK, Next Ticket</button>
+            <p id="timer">popup will be closed automatically in 5s</p>
+        </div>
+    </section>
+
+    <!-- Tambahkan script untuk scan QR code -->
+    <!-- <script> -->
+    <!--     let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), scanPeriod: 5, mirror: false }); -->
+    <!--     let currentCameraIndex = 0; // Index untuk kamera yang sedang digunakan -->
+    <!--     let cameras = []; // Array untuk menyimpan semua kamera yang terdeteksi -->
+    <!---->
+    <!--     // Event listener ketika QR code berhasil dipindai -->
+    <!--     scanner.addListener('scan', function(content) { -->
+    <!--         console.log('QR Code detected: ', content); -->
+    <!--         document.getElementById('manualInput').value = content; -->
+    <!--         document.getElementById('ticketCode').innerText = content; -->
+    <!--         showPopup(); -->
+    <!--     }); -->
+    <!---->
+    <!--     // Mencari kamera yang tersedia dan memulai dengan kamera belakang jika ada -->
+    <!--     Instascan.Camera.getCameras().then(function(cameraList) { -->
+    <!--         cameras = cameraList; // Simpan daftar kamera -->
+    <!--         if (cameras.length > 0) { -->
+    <!--             // Cari kamera belakang -->
+    <!--             let backCamera = cameras.find(cam => cam.name.toLowerCase().includes('back')); -->
+    <!--             if (backCamera) { -->
+    <!--                 scanner.start(backCamera); // Mulai dengan kamera belakang jika ditemukan -->
+    <!--             } else { -->
+    <!--                 scanner.start(cameras[0]); // Jika tidak ada, gunakan kamera pertama -->
+    <!--             } -->
+    <!--         } else { -->
+    <!--             alert('No cameras found. Please ensure your camera is connected.'); -->
+    <!--             console.error('No cameras found.'); -->
+    <!--         } -->
+    <!--     }).catch(function(e) { -->
+    <!--         alert('Error accessing camera: ' + e); -->
+    <!--         console.error('Error accessing camera: ', e); -->
+    <!--     }); -->
+    <!---->
+    <!--     // Fungsi untuk mengganti kamera -->
+    <!--     function changeCamera() { -->
+    <!--         if (cameras.length > 1) { -->
+    <!--             // Beralih ke kamera berikutnya -->
+    <!--             currentCameraIndex = (currentCameraIndex + 1) % cameras.length; -->
+    <!--             scanner.start(cameras[currentCameraIndex]); -->
+    <!--         } else { -->
+    <!--             alert('No other cameras found.'); -->
+    <!--         } -->
+    <!--     } -->
+    <!-- </script> -->
+
+
+<script>
+    let html5QrCode = new Html5Qrcode("preview");
+    let currentCameraIndex = 0;
+    let cameras = [];
+
+    // Function to handle QR code scan success
+    function onScanSuccess(decodedText, decodedResult) {
+        console.log("QR Code detected: ", decodedText);
+        document.getElementById('manualInput').value = decodedText;
+        document.getElementById('ticketCode').innerText = decodedText;
+        showPopup();  // Your custom function to display popup
+    }
+
+    // Function to handle scan failure (optional)
+    function onScanFailure(error) {
+        console.warn(`Code scan error = ${error}`);
+    }
+
+    // Get available cameras and start scanning with the back camera if available
+    Html5Qrcode.getCameras().then(function(deviceCameras) {
+        cameras = deviceCameras; // Store the available cameras
+        if (cameras.length > 0) {
+            // Look for the back camera
+            let backCamera = cameras.find(cam => cam.label.toLowerCase().includes('back'));
+            if (backCamera) {
+                html5QrCode.start(backCamera.id, {
+                    fps: 10,    // Scans per second
+                    qrbox: 250  // Display scanning box of 250px
+                }, onScanSuccess, onScanFailure);
+            } else {
+                html5QrCode.start(cameras[0].id, {
+                    fps: 10,
+                    qrbox: 250
+                }, onScanSuccess, onScanFailure);  // If no back camera, use the first camera
+            }
+        } else {
+            alert("No cameras found. Please ensure your camera is connected.");
+            console.error("No cameras found.");
+        }
+    }).catch(function(e) {
+        alert("Error accessing camera: " + e);
+        console.error("Error accessing camera: ", e);
+    });
+
+    // Function to switch between cameras
+    function changeCamera() {
+        if (cameras.length > 1) {
+            currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
+            html5QrCode.stop().then(() => {
+                html5QrCode.start(cameras[currentCameraIndex].id, {
+                    fps: 10,
+                    qrbox: 250
+                }, onScanSuccess, onScanFailure);
+            }).catch(err => {
+                console.error("Error switching camera: ", err);
+            });
+        } else {
+            alert("No other cameras found.");
+        }
+    }
+</script>
+</body>
+<script>
+    function showPopup() {
+        document.getElementById('overlay').style.display = 'flex';
+        document.getElementById('popupSuccess').style.display = 'flex';
+        setTimeout(function() {
+            closePopup();
+        }, 5000);
+    }
+    function closePopup() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('popupSuccess').style.display = 'none';
+    }
+</script>
+</html>

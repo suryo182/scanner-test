@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Events</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="../img/awhl.svg">
+</head>
+
+
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+    }
+    .title-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        padding: 32px;
+    }
+    .title-div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    main {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+    .method-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
+        flex-grow: 1;
+    }
+    .method-item {
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        border: 1px solid var(--borderDark);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        gap: 32px;
+    }
+    .method-item:hover {
+        border: 1px solid grey;
+    }
+    .method-item img {
+        height: 50px;
+    }
+    .item-identity {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .device-wrap {
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+    }
+    .buttonDiv {
+        padding: 16px;
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+<body>
+    <main>
+        <div class="title-wrap">
+            <img src="../img/awhl.svg" alt="" class="logo">
+            <div class="title-div">
+                <h1>QR Event Scanner</h1>
+                <p>for AWHL staff</p>
+            </div>
+        </div>
+        <div class="method-list">
+            <h2>Select Method</h2>
+            <div class="method-item" onclick="window.location.href = 'campaign/self-scan.html'">
+                <div class="item-identity">
+                    <h2>Self Scan</h2>
+                    <p>Customer scan their ticket on phone using our laptop's camera</p>
+                </div>
+                <div class="device-wrap">
+                    <img src="img/computer.svg" alt="">
+                    <img src="img/laptop.svg" alt="">
+                </div>
+            </div>
+            <div class="method-item" onclick="window.location.href = 'campaign/scan.html'">
+                <div class="item-identity">
+                    <h2>Staff Scanning QR</h2>
+                    <p>Scan customer's ticket using staff's phone or tablet</p>
+                </div>
+                <div class="device-wrap">
+                    <img src="img/phone.svg" alt="">
+                    <img src="img/tablet.svg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="buttonDiv">
+            <button class="buttonPrimary">Logout</button>
+        </div>
+    </main>
+    
+</body>
+</html>

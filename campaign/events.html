@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Events</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="../img/awhl.svg">
+</head>
+
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+    }
+    .title-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        padding: 32px;
+    }
+    .title-div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    main {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+    .event-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
+        flex-grow: 1;
+    }
+    .event-item {
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        border: 1px solid var(--borderDark);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+    .event-item:hover {
+        border: 1px solid grey;
+    }
+    .buttonDiv {
+        padding: 16px;
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+<body>
+    <main>
+        <div class="title-wrap">
+            <img src="../img/awhl.svg" alt="" class="logo">
+            <div class="title-div">
+                <h1>QR Event Scanner</h1>
+                <p>for AWHL staff</p>
+            </div>
+        </div>
+        <div class="event-list">
+            <div class="event-item" onclick="window.location.href = 'scan.html'">
+                <h3>Brand Yearly Anniversary</h3>
+                <p>1 November 2024 : 7.00 PM - 10.00 PM</p>
+                <p>500 tickets sold</p>
+            </div>
+            <div class="event-item" onclick="window.location.href = 'scan.html'">
+                <h3>Brand Yearly Anniversary</h3>
+                <p>1 November 2024 : 7.00 PM - 10.00 PM</p>
+                <p>500 tickets sold</p>
+            </div>
+        </div>
+        <div class="buttonDiv">
+            <button class="buttonPrimary">Logout</button>
+        </div>
+    </main>
+    
+</body>
+</html>

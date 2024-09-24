@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Login to Scan Event</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="../img/awhl.svg">
+</head>
+
+<style>
+    .title-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        padding: 32px;
+    }
+    .title-div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+</style>
+
+<body>
+    <main>
+        <div class="title-wrap">
+            <img src="../img/awhl.svg" alt="" class="logo">
+            <div class="title-div">
+                <h1>QR Event Scanner</h1>
+                <p>for AWHL staff</p>
+            </div>
+        </div>
+        <form action="" method="post">
+            <div class="inputDiv">
+                <label for="email">Email</label>
+                <input type="email" placeholder="Input email here" name="email">
+            </div>
+            <div class="inputDiv">
+                <label for="password">Password</label>
+                <input type="password" placeholder="Input password here" name="password">
+            </div>
+            <button class="buttonPrimary" name="login" onclick="window.location.href = 'events.html'">Login</button>
+        </form>
+    </main>
+</body>
+</html>

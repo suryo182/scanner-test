@@ -150,7 +150,7 @@
             </div>
         </section>
         <section class="right-column">
-            <video id="preview" style="width: 500px; height: 500px;"></video> <!-- Preview kamera akan tampil di sini -->
+            <video id="preview" style="width: 100%; height: 100%;"></video> <!-- Preview kamera akan tampil di sini -->
         </section>
     </main>
 </body>
@@ -158,7 +158,6 @@
     let html5QrCode = new Html5Qrcode("preview");
     let currentCameraIndex = 0; // Index for the currently used camera
     let cameras = []; // Array to store all detected cameras
-    console.log({html5QrCode})
 
     // Event listener when a QR code is successfully scanned
     function onScanSuccess(content) {
@@ -176,16 +175,19 @@
     // Fetch available cameras and start with the back camera if available
     Html5Qrcode.getCameras().then(function(cameraList) {
         cameras = cameraList; // Store the list of cameras
-      console.log({cameras})
         if (cameras.length > 0) {
             // Look for the back camera
             let backCamera = cameras.find(cam => cam.label.toLowerCase().includes('back'));
             if (backCamera) {
-          console.log("back camera")
-                html5QrCode.start(backCamera.id, { fps: 10, qrbox: { width: 250, height: 250 } }, onScanSuccess, onScanFailure);  // Start with the back camera if found
+                html5QrCode.start(backCamera.id, {
+                    fps: 10,    // Optional, frame per seconds for qr code scanning
+                    qrbox: { width: 250, height: 250 }  // Optional, if you want bounded box UI
+                }, onScanSuccess, onScanFailure);  // Start with the back camera if found
             } else {
-          console.log("front camera camera")
-                html5QrCode.start(cameras[0].id, { fps: 10, qrbox: { width: 250, height: 250 } }, onScanSuccess, onScanFailure);  // Use the first camera if no back camera is found
+                html5QrCode.start(cameras[0].id, {
+                    fps: 10,    // Optional, frame per seconds for qr code scanning
+                    qrbox: { width: 250, height: 250 }  // Optional, if you want bounded box UI
+                }, onScanSuccess, onScanFailure);  // Use the first camera if no back camera is found
             }
         } else {
             alert('No cameras found. Please ensure your camera is connected.');

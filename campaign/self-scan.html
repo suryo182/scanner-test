@@ -176,6 +176,7 @@
     // Fetch available cameras and start with the back camera if available
     Html5Qrcode.getCameras().then(function(cameraList) {
         cameras = cameraList; // Store the list of cameras
+      console.log({cameras})
         if (cameras.length > 0) {
             // Look for the back camera
             let backCamera = cameras.find(cam => cam.label.toLowerCase().includes('back'));

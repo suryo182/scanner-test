@@ -161,15 +161,35 @@
 
     // Event listener when a QR code is successfully scanned
     function onScanSuccess(content) {
-        console.log('QR Code detected: ', content);
-        document.getElementById('manualInput').value = content;
-        document.getElementById('ticketCode').innerText = content;
-        showResult();  // Call the result display function
+        confirmTicket(content)
     }
 
     // Function to handle scan failures (optional)
     function onScanFailure(error) {
         console.warn(`QR Code scan failed: ${error}`);
+    }
+
+    async function confirmTicket(ticketCode) {
+      const data = new FormData()
+      data.set('ticket_id', ticketCode)
+      const url = "https://mb-booking-sit.awellness.sg/api/admin/campaign/campaigns/event/confirmation";
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          body: JSON.stringify(data)
+        });
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+        const json = await response.json();
+        console.log(json);
+        console.log('QR Code detected: ', content);
+        document.getElementById('manualInput').value = content;
+        document.getElementById('ticketCode').innerText = content;
+        showResult();  // Call the result display function
+      } catch (error) {
+        console.error(error.message);
+      }
     }
 
     // Fetch available cameras and start with the back camera if available

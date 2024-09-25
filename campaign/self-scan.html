@@ -186,7 +186,7 @@
       document.getElementById('ticketCode-failed').innerText = ticketCode;
       const data = new FormData()
       data.set('ticket_id', ticketCode)
-      const url = "https://mb-booking-sit.awellness.sg/api/admin/campaign/campaigns/event/confirmation";
+      const url = "https://mb-booking-sit.awellness.sg/api/admin/campaign/event/confirmation";
       try {
         const response = await fetch(url, {
           method: "POST",

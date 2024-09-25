@@ -134,7 +134,7 @@
                 </div>
             <p id="announcement">Self Scanning Ticket</p>
             <div class="input-manual" id="manual-div">
-                <input id="manualInput" type="number" placeholder="Enter Ticket Code">
+                <input id="manualInput" type="string" placeholder="Enter Ticket Code">
                 <button class="buttonPrimary" onclick="confirmTicket(document.getElementById('manualInput').value); document.getElementById('ticketCode').innerText = manualInput.value;">Submit</button>
             </div>
             <div class="result" id="result-success" style="display: none;">

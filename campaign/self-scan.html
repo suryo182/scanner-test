@@ -142,7 +142,7 @@
                 <img src="../img/tick.svg" alt="">
                 <div class="result-text">
                     <p>Ticket code</p>
-                    <h2 id="ticketCode">123</h2>
+                    <h2 id="ticketCode-success"></h2>
                     <h2 id="ticketHolder">Customer Name</h2>
                     <p>successfully registered</p>
                 </div>
@@ -150,9 +150,9 @@
             </div>
             <div class="result" id="result-failed" style="display: none;">
                 <h2 id="thankyou">Something error happens</h2>
-                <img src="../img/tick.svg" alt="">
+                <img src="../img/question.svg" alt="">
                 <div class="result-text">
-                    <h2 id="ticketCode">123</h2>
+                    <h2 id="ticketCode-failed">123</h2>
                     <p>Not found in the list</p>
                     <h2 id="ticketHolder">Wrong ticket / wrong event</h2>
                 </div>
@@ -196,9 +196,9 @@
         }
         const json = await response.json();
         console.log(json);
-        showResultSuccess();  // Call the result display function
+        showResultSuccess(ticketCode);  // Call the result display function
       } catch (error) {
-        showResultFailed();  // Call the result display function
+        showResultFailed(ticketCode);  // Call the result display function
         console.error(error.message);
       }
     }
@@ -230,10 +230,11 @@
     });
 
     // Function to show the result after scanning
-    function showResultSuccess() {
+    function showResultSuccess(ticketCode) {
         document.getElementById('announcement').style.display = 'none';
         document.getElementById('manual-div').style.display = 'none';
         document.getElementById('result-success').style.display = 'flex';
+        document.getElementById('ticketCode-success').value = ticketCode;
         setTimeout(() => {
             document.getElementById('result-success').style.display = 'none';
             document.getElementById('manualInput').value = '';
@@ -242,10 +243,11 @@
         }, 3000);
     }
 
-    function showResultFailed() {
+    function showResultFailed(ticketCode) {
         document.getElementById('announcement').style.display = 'none';
         document.getElementById('manual-div').style.display = 'none';
         document.getElementById('result-failed').style.display = 'flex';
+        document.getElementById('ticketCode-failed').value = ticketCode;
         setTimeout(() => {
             document.getElementById('result-failed').style.display = 'none';
             document.getElementById('manualInput').value = '';

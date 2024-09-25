@@ -278,29 +278,29 @@
       });
 
     // Function to switch between cameras
-    // function changeCamera() {
-    //   if (cameras.length > 1) {
-    //     currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
-    //     html5QrCode
-    //       .stop()
-    //       .then(() => {
-    //         html5QrCode.start(
-    //           cameras[currentCameraIndex].id,
-    //           {
-    //             fps: 10,
-    //             qrbox: 250,
-    //           },
-    //           onScanSuccess,
-    //           onScanFailure,
-    //         );
-    //       })
-    //       .catch((err) => {
-    //         console.error("Error switching camera: ", err);
-    //       });
-    //   } else {
-    //     alert("No other cameras found.");
-    //   }
-    // }
+    function changeCamera() {
+      if (cameras.length > 1) {
+        currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
+        html5QrCode
+          .stop()
+          .then(() => {
+            html5QrCode.start(
+              cameras[currentCameraIndex].id,
+              {
+                fps: 10,
+                qrbox: 250,
+              },
+              onScanSuccess,
+              onScanFailure,
+            );
+          })
+          .catch((err) => {
+            console.error("Error switching camera: ", err);
+          });
+      } else {
+        alert("No other cameras found.");
+      }
+    }
 
     function showPopupSuccess() {
       document.getElementById("overlay").style.display = "flex";

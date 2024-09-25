@@ -180,10 +180,10 @@
     }
 
     async function confirmTicket(ticketCode) {
-      console.log('QR Code detected: ', content);
-      document.getElementById('manualInput').value = content;
-      document.getElementById('ticketCode-success').innerText = content;
-      document.getElementById('ticketCode-failed').innerText = content;
+      console.log('QR Code detected: ', ticketCode);
+      document.getElementById('manualInput').value = ticketCode;
+      document.getElementById('ticketCode-success').innerText = ticketCode;
+      document.getElementById('ticketCode-failed').innerText = ticketCode;
       const data = new FormData()
       data.set('ticket_id', ticketCode)
       const url = "https://mb-booking-sit.awellness.sg/api/admin/campaign/campaigns/event/confirmation";

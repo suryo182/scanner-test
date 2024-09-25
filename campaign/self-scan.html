@@ -189,7 +189,7 @@
       const url = "https://mb-booking-sit.awellness.sg/api/admin/campaign/event/confirmation";
       try {
         const response = await fetch(url, {
-          method: "POST",
+          method: "PUT",
           body: data
         });
         if (!response.ok) {

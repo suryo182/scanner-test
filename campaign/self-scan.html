@@ -137,7 +137,7 @@
                 <input id="manualInput" type="number" placeholder="Enter Ticket Code">
                 <button class="buttonPrimary" onclick="showResult(); document.getElementById('ticketCode').innerText = manualInput.value;">Submit</button>
             </div>
-            <div class="result" id="result" style="display: none;">
+            <div class="result" id="result-success" style="display: none;">
                 <h2 id="thankyou">Thank you, enjoy the event</h2>
                 <img src="../img/tick.svg" alt="">
                 <div class="result-text">
@@ -145,6 +145,16 @@
                     <h2 id="ticketCode">123</h2>
                     <h2 id="ticketHolder">Customer Name</h2>
                     <p>successfully registered</p>
+                </div>
+                <p id="timer">this info will be disappear automatically in 3s</p>
+            </div>
+            <div class="result" id="result-failed" style="display: none;">
+                <h2 id="thankyou">Something error happens</h2>
+                <img src="../img/tick.svg" alt="">
+                <div class="result-text">
+                    <h2 id="ticketCode">123</h2>
+                    <p>Not found in the list</p>
+                    <h2 id="ticketHolder">Wrong ticket / wrong event</h2>
                 </div>
                 <p id="timer">this info will be disappear automatically in 3s</p>
             </div>
@@ -161,6 +171,9 @@
 
     // Event listener when a QR code is successfully scanned
     function onScanSuccess(content) {
+        console.log('QR Code detected: ', content);
+        document.getElementById('manualInput').value = content;
+        document.getElementById('ticketCode').innerText = content;
         confirmTicket(content)
     }
 
@@ -176,18 +189,16 @@
       try {
         const response = await fetch(url, {
           method: "POST",
-          body: JSON.stringify(data)
+          body: data
         });
         if (!response.ok) {
           throw new Error(`Response status: ${response.status}`);
         }
         const json = await response.json();
         console.log(json);
-        console.log('QR Code detected: ', content);
-        document.getElementById('manualInput').value = content;
-        document.getElementById('ticketCode').innerText = content;
-        showResult();  // Call the result display function
+        showResultSuccess();  // Call the result display function
       } catch (error) {
+        showResultFailed();  // Call the result display function
         console.error(error.message);
       }
     }
@@ -219,12 +230,24 @@
     });
 
     // Function to show the result after scanning
-    function showResult() {
+    function showResultSuccess() {
         document.getElementById('announcement').style.display = 'none';
         document.getElementById('manual-div').style.display = 'none';
-        document.getElementById('result').style.display = 'flex';
+        document.getElementById('result-success').style.display = 'flex';
         setTimeout(() => {
-            document.getElementById('result').style.display = 'none';
+            document.getElementById('result-success').style.display = 'none';
+            document.getElementById('manualInput').value = '';
+            document.getElementById('announcement').style.display = 'flex';
+            document.getElementById('manual-div').style.display = 'flex';
+        }, 3000);
+    }
+
+    function showResultFailed() {
+        document.getElementById('announcement').style.display = 'none';
+        document.getElementById('manual-div').style.display = 'none';
+        document.getElementById('result-failed').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('result-failed').style.display = 'none';
             document.getElementById('manualInput').value = '';
             document.getElementById('announcement').style.display = 'flex';
             document.getElementById('manual-div').style.display = 'flex';

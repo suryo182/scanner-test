@@ -1,287 +1,328 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Scan Ticket</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="icon" href="../img/awhl.svg">
-    
-<!-- Tambahkan library html5-qrcode -->
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" href="../img/awhl.svg" />
+
+    <!-- Tambahkan library html5-qrcode -->
+    <script
+      src="https://unpkg.com/html5-qrcode"
+      type="text/javascript"
+    ></script>
 
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            margin: 0;
-        }
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            padding: 5% 2%;
-            background-color: white;
-        }
-        #logo {
-            width: 100px;
-        }
-        h1 {
-            margin: 0;
-            flex-grow: 1;
-            text-align: center;
-        }
-        .iconBack {
-            position: absolute;
-            left: 5%;
-            top: 5%;
-            width: 24px;
-            height: 24px;
-        }
-        .event-title {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        main {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            align-items: center;
-            justify-content: center;
-        }
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 90%;
-            background-color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            padding: 5%;
-        }
-        .camera-button {
-            display: flex;
-            flex-direction: row;
-            gap: 8px;
-            width: 100%;
-        }
-        .input-manual {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            gap: 8px;
-        }
-        .input-manual input {
-            flex-grow: 1;
-        }
-        video {
-            border: 2px solid #000;
-        }
-        section {
-            position: fixed;
-            top: 0;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            height: 100vh;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.6);
-        }
-        .popup {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 32px;
-            padding: 24px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
-            width: 300px;
-        }
-        .popup-text {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        #ticketCode {
-            font-size: 32px;
-        }
-        #timer {
-            font-size: 10px;
-            text-align: center;
-        }
+      body {
+          display: flex;
+          flex-direction: column;
+          height: 100vh;
+          margin: 0;
+      }
+      header {
+          position: fixed;
+          top: 0;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+          padding: 5% 2%;
+          background-color: white;
+      }
+      #logo {
+          width: 100px;
+      }
+      h1 {
+          margin: 0;
+          flex-grow: 1;
+          text-align: center;
+      }
+      .iconBack {
+          position: absolute;
+          left: 5%;
+          top: 5%;
+          width: 24px;
+          height: 24px;
+      }
+      .event-title {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+      }
+      main {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+          align-items: center;
+          justify-content: center;
+      }
+      footer {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 90%;
+          background-color: white;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+          padding: 5%;
+      }
+      .camera-button {
+          display: flex;
+          flex-direction: row;
+          gap: 8px;
+          width: 100%;
+      }
+      .input-manual {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          gap: 8px;
+      }
+      .input-manual input {
+          flex-grow: 1;
+      }
+      video {
+          border: 2px solid #000;
+      }
+      section {
+          position: fixed;
+          top: 0;
+          left: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: centerj
+          gap: 16px;
+          height: 100vh;
+          width: 100%;
+          background: rgba(0, 0, 0, 0.6);
+      }
+      .popup {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 32px;
+          padding: 24px;
+          background: white;
+          border-radius: 8px;
+          box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+          width: 300px;
+      }
+      .popup-text {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+      }
+      #ticketCode {
+          font-size: 32px;
+      }
+      #timer {
+          font-size: 10px;
+          text-align: center;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <img id="logo" src="../img/awhl.svg" alt="">
-        <h1>Scan Ticket</h1>
-        <div class="event-title">
-            <h2>Brand Yearly Anniversary</h2>
-            <p>1 November 2024 : 7.00 PM - 10.00 PM</p>
-        </div>
+      <img id="logo" src="../img/awhl.svg" alt="" />
+      <h1>Scan Ticket</h1>
+      <div class="event-title">
+        <h2>Brand Yearly Anniversary</h2>
+        <p>1 November 2024 : 7.00 PM - 10.00 PM</p>
+      </div>
     </header>
     <main>
-        <div id="preview" style="width: 640px; min-height: 100px;"></div> <!-- Preview kamera akan tampil di sini -->
+      <div id="preview" style="width: 640px; min-height: 100px"></div>
+      <!-- Preview kamera akan tampil di sini -->
     </main>
     <footer>
-        <div class="camera-button">
-            <div class="buttonOutline buttonSmall" onclick="changeCamera()" style="flex-grow: 1;">
-j               <img src="../img/camera.svg" alt="">
-                <a>Change Camera</a></div>
-            <div class="buttonPrimary" onclick="window.location.href = 'scan.html'">Scan Other Ticket</div>
+      <div class="camera-button">
+        <div
+          class="buttonOutline buttonSmall"
+          onclick="changeCamera()"
+          style="flex-grow: 1"
+        >
+          j <img src="../img/camera.svg" alt="" /> <a>Change Camera</a>
         </div>
-        <div class="input-manual">
-            <input id="manualInput" type="number" placeholder="Enter Ticket Code">
-            <button class="buttonPrimary" onclick="confirmTicket(document.getElementById('manualInput').value); document.getElementById('ticketCode').innerText = manualInput.value;">Submit</button>
+        <div class="buttonPrimary" onclick="window.location.href = 'scan.html'">
+          Scan Other Ticket
         </div>
+      </div>
+      <div class="input-manual">
+        <input id="manualInput" type="number" placeholder="Enter Ticket Code" />
+        <button
+          class="buttonPrimary"
+          onclick="confirmTicket(document.getElementById('manualInput').value); document.getElementById('ticketCode').innerText = manualInput.value;"
+        >
+          Submit
+        </button>
+      </div>
     </footer>
 
     <section id="overlay" style="display: none">
-        <div class="popup" id="popupSuccess" style="display: none">
-            <img src="../img/tick.svg" alt="">
-            <div class="popup-text">
-                <p>Ticket code</p>
-                <h2 id="ticketCode-success"></h2>
-                <h2 id="ticketHolder">Customer Name</h2>
-                <p>successfully registered</p>
-            </div>
-            <button class="buttonPrimary" onclick="closePopup()">OK, Next Ticket</button>
-            <p id="timer">popup will be closed automatically in 5s</p>
+      <div class="popup" id="popupSuccess" style="display: none">
+        <img src="../img/tick.svg" alt="" />
+        <div class="popup-text">
+          <p>Ticket code</p>
+          <h2 id="ticketCode-success"></h2>
+          <h2 id="ticketHolder">Customer Name</h2>
+          <p>successfully registered</p>
         </div>
+        <button class="buttonPrimary" onclick="closePopup()">
+          OK, Next Ticket
+        </button>
+        <p id="timer">popup will be closed automatically in 5s</p>
+      </div>
 
-        <div class="popup" id="popupFailed" style="display: none">
-            <img src="../img/question.svg" alt="">
-            <div class="popup-text">
-                <h2 id="ticketCode-failed"></h2>
-                <p>Not found in the list</p>
-                <h2 id="ticketHolder">Wrong ticket / wrong event</h2>
-            </div>
-            <button class="buttonPrimary" onclick="closePopup()">OK, Next Ticket</button>
-            <p id="timer">popup will be closed automatically in 5s</p>
+      <div class="popup" id="popupFailed" style="display: none">
+        <img src="../img/question.svg" alt="" />
+        <div class="popup-text">
+          <h2 id="ticketCode-failed"></h2>
+          <p>Not found in the list</p>
+          <h2 id="ticketHolder">Wrong ticket / wrong event</h2>
         </div>
+        <button class="buttonPrimary" onclick="closePopup()">
+          OK, Next Ticket
+        </button>
+        <p id="timer">popup will be closed automatically in 5s</p>
+      </div>
     </section>
+  </body>
 
-    <!-- Tambahkan script untuk scan QR code -->
-    <script>
-        let html5QrCode = new Html5Qrcode("preview");
-        let currentCameraIndex = 0;
-        let cameras = [];
+  <!-- Tambahkan script untuk scan QR code -->
+  <script>
+    let html5QrCode = new Html5Qrcode("preview");
+    let currentCameraIndex = 0;
+    let cameras = [];
 
-        // Function to handle QR code scan success
-        function onScanSuccess(decodedText, decodedResult) {
-            confirmTicket(content)
-        }
+    // Function to handle QR code scan success
+    function onScanSuccess(decodedText, decodedResult) {
+      confirmTicket(content);
+    }
 
-        // Function to handle scan failure (optional)
-        function onScanFailure(error) {
-            console.warn(`Code scan error = ${error}`);
-        }
+    // Function to handle scan failure (optional)
+    function onScanFailure(error) {
+      console.warn(`Code scan error = ${error}`);
+    }
 
-        async function confirmTicket(ticketCode) {
-          console.log('QR Code detected: ', ticketCode);
-          document.getElementById('manualInput').value = ticketCode;
-          document.getElementById('ticketCode-success').innerText = ticketCode;
-          document.getElementById('ticketCode-failed').innerText = ticketCode;
-          const data = new FormData()
-          data.set('ticket_id', ticketCode)
-          const url = "https://mb-booking-sit.awellness.sg/api/admin/campaign/event/confirmation";
-          try {
-            const response = await fetch(url, {
-              method: "PUT",
-              body: data
-            });
-            if (!response.ok) {
-              throw new Error(`Response status: ${response.status}`);
-            }
-            const json = await response.json();
-            console.log(json);
-            showPopupSuccess()
-          } catch (error) {
-            showPopupFailed()
-            console.error(error.message);
-          }
-        }
-
-        // Get available cameras and start scanning with the back camera if available
-        Html5Qrcode.getCameras().then(function(deviceCameras) {
-            cameras = deviceCameras; // Store the available cameras
-            if (cameras.length > 0) {
-                // Look for the back camera
-                let backCamera = cameras.find(cam => cam.label.toLowerCase().includes('back'));
-                if (backCamera) {
-                    html5QrCode.start(backCamera.id, {
-                        fps: 10,    // Scans per second
-                        qrbox: 250  // Display scanning box of 250px
-                    }, onScanSuccess, onScanFailure);
-                } else {
-                    html5QrCode.start(cameras[0].id, {
-                        fps: 10,
-                        qrbox: 250
-                    }, onScanSuccess, onScanFailure);  // If no back camera, use the first camera
-                }
-            } else {
-                alert("No cameras found. Please ensure your camera is connected.");
-                console.error("No cameras found.");
-            }
-        }).catch(function(e) {
-            alert("Error accessing camera: " + e);
-            console.error("Error accessing camera: ", e);
+    async function confirmTicket(ticketCode) {
+      console.log("QR Code detected: ", ticketCode);
+      document.getElementById("manualInput").value = ticketCode;
+      document.getElementById("ticketCode-success").innerText = ticketCode;
+      document.getElementById("ticketCode-failed").innerText = ticketCode;
+      const data = new FormData();
+      data.set("ticket_id", ticketCode);
+      const url =
+        "https://mb-booking-sit.awellness.sg/api/admin/campaign/event/confirmation";
+      try {
+        const response = await fetch(url, {
+          method: "PUT",
+          body: data,
         });
-
-        // Function to switch between cameras
-        function changeCamera() {
-            if (cameras.length > 1) {
-                currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
-                html5QrCode.stop().then(() => {
-                    html5QrCode.start(cameras[currentCameraIndex].id, {
-                        fps: 10,
-                        qrbox: 250
-                    }, onScanSuccess, onScanFailure);
-                }).catch(err => {
-                    console.error("Error switching camera: ", err);
-                });
-            } else {
-                alert("No other cameras found.");
-            }
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
         }
-    </script>
-</body>
-<script>
+        const json = await response.json();
+        console.log(json);
+        showPopupSuccess();
+      } catch (error) {
+        showPopupFailed();
+        console.error(error.message);
+      }
+    }
+
+    // Get available cameras and start scanning with the back camera if available
+    Html5Qrcode.getCameras()
+      .then(function (deviceCameras) {
+        cameras = deviceCameras; // Store the available cameras
+        if (cameras.length > 0) {
+          // Look for the back camera
+          let backCamera = cameras.find((cam) =>
+            cam.label.toLowerCase().includes("back"),
+          );
+          if (backCamera) {
+            html5QrCode.start(
+              backCamera.id,
+              {
+                fps: 10, // Scans per second
+                qrbox: 250, // Display scanning box of 250px
+              },
+              onScanSuccess,
+              onScanFailure,
+            );
+          } else {
+            html5QrCode.start(
+              cameras[0].id,
+              {
+                fps: 10,
+                qrbox: 250,
+              },
+              onScanSuccess,
+              onScanFailure,
+            ); // If no back camera, use the first camera
+          }
+        } else {
+          alert("No cameras found. Please ensure your camera is connected.");
+          console.error("No cameras found.");
+        }
+      })
+      .catch(function (e) {
+        alert("Error accessing camera: " + e);
+        console.error("Error accessing camera: ", e);
+      });
+
+    // Function to switch between cameras
+    function changeCamera() {
+      if (cameras.length > 1) {
+        currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
+        html5QrCode
+          .stop()
+          .then(() => {
+            html5QrCode.start(
+              cameras[currentCameraIndex].id,
+              {
+                fps: 10,
+                qrbox: 250,
+              },
+              onScanSuccess,
+              onScanFailure,
+            );
+          })
+          .catch((err) => {
+            console.error("Error switching camera: ", err);
+          });
+      } else {
+        alert("No other cameras found.");
+      }
+    }
+
     function showPopupSuccess() {
-        document.getElementById('overlay').style.display = 'flex';
-        document.getElementById('popupSuccess').style.display = 'flex';
-        setTimeout(function() {
-            closePopup();
-        }, 5000);
+      document.getElementById("overlay").style.display = "flex";
+      document.getElementById("popupSuccess").style.display = "flex";
+      setTimeout(function () {
+        closePopup();
+      }, 5000);
     }
 
     function showPopupFailed() {
-        document.getElementById('overlay').style.display = 'flex';
-        document.getElementById('popupFailed').style.display = 'flex';
-        setTimeout(function() {
-            closePopup();
-        }, 5000);
+      document.getElementById("overlay").style.display = "flex";
+      document.getElementById("popupFailed").style.display = "flex";
+      setTimeout(function () {
+        closePopup();
+      }, 5000);
     }
     function closePopup() {
-        document.getElementById('overlay').style.display = 'none';
-        document.getElementById('popupSuccess').style.display = 'none';
-        document.getElementById('popupFailed').style.display = 'none';
+      document.getElementById("overlay").style.display = "none";
+      document.getElementById("popupSuccess").style.display = "none";
+      document.getElementById("popupFailed").style.display = "none";
     }
-</script>
+  </script>
 </html>

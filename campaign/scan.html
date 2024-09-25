@@ -139,7 +139,7 @@
         </div>
     </header>
     <main>
-        <div id="preview" style="width: 100%; height: 100%;"></div> <!-- Preview kamera akan tampil di sini -->
+        <div id="preview" style="width: 500px; min-height: 100px;"></div> <!-- Preview kamera akan tampil di sini -->
     </main>
     <footer>
         <div class="camera-button">
@@ -159,9 +159,20 @@
             <img src="../img/tick.svg" alt="">
             <div class="popup-text">
                 <p>Ticket code</p>
-                <h2 id="ticketCode">123</h2>
+                <h2 id="ticketCode-success"></h2>
                 <h2 id="ticketHolder">Customer Name</h2>
                 <p>successfully registered</p>
+            </div>
+            <button class="buttonPrimary" onclick="closePopup()">OK, Next Ticket</button>
+            <p id="timer">popup will be closed automatically in 5s</p>
+        </div>
+
+        <div class="popup" id="popupFailed" style="display: none">
+            <img src="../img/question.svg" alt="">
+            <div class="popup-text">
+                <h2 id="ticketCode-failed"></h2>
+                <p>Not found in the list</p>
+                <h2 id="ticketHolder">Wrong ticket / wrong event</h2>
             </div>
             <button class="buttonPrimary" onclick="closePopup()">OK, Next Ticket</button>
             <p id="timer">popup will be closed automatically in 5s</p>
@@ -176,15 +187,37 @@
 
         // Function to handle QR code scan success
         function onScanSuccess(decodedText, decodedResult) {
-            console.log("QR Code detected: ", decodedText);
-            document.getElementById('manualInput').value = decodedText;
-            document.getElementById('ticketCode').innerText = decodedText;
-            showPopup();  // Your custom function to display popup
+            confirmTicket(content)
         }
 
         // Function to handle scan failure (optional)
         function onScanFailure(error) {
             console.warn(`Code scan error = ${error}`);
+        }
+
+        async function confirmTicket(ticketCode) {
+          console.log('QR Code detected: ', ticketCode);
+          document.getElementById('manualInput').value = ticketCode;
+          document.getElementById('ticketCode-success').innerText = ticketCode;
+          document.getElementById('ticketCode-failed').innerText = ticketCode;
+          const data = new FormData()
+          data.set('ticket_id', ticketCode)
+          const url = "https://mb-booking-sit.awellness.sg/api/admin/campaign/event/confirmation";
+          try {
+            const response = await fetch(url, {
+              method: "PUT",
+              body: data
+            });
+            if (!response.ok) {
+              throw new Error(`Response status: ${response.status}`);
+            }
+            const json = await response.json();
+            console.log(json);
+            showPopupSuccess()
+          } catch (error) {
+            showPopupFailed()
+            console.error(error.message);
+          }
         }
 
         // Get available cameras and start scanning with the back camera if available
@@ -232,9 +265,17 @@
     </script>
 </body>
 <script>
-    function showPopup() {
+    function showPopupSuccess() {
         document.getElementById('overlay').style.display = 'flex';
         document.getElementById('popupSuccess').style.display = 'flex';
+        setTimeout(function() {
+            closePopup();
+        }, 5000);
+    }
+
+    function showPopupFailed() {
+        document.getElementById('overlay').style.display = 'flex';
+        document.getElementById('popupFailed').style.display = 'flex';
         setTimeout(function() {
             closePopup();
         }, 5000);
@@ -242,6 +283,7 @@
     function closePopup() {
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('popupSuccess').style.display = 'none';
+        document.getElementById('popupFailed').style.display = 'none';
     }
 </script>
 </html>

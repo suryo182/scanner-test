@@ -230,9 +230,9 @@
         }
         const json = await response.json();
         console.log(json);
-        showResultSuccess(); // Call the result display function
+        showPopupSuccess(); // Call the result display function
       } catch (error) {
-        showResultFailed(); // Call the result display function
+        showPopupFailed(); // Call the result display function
         console.error(error.message);
       }
     }

@@ -171,9 +171,6 @@
 
     // Event listener when a QR code is successfully scanned
     function onScanSuccess(content) {
-        console.log('QR Code detected: ', content);
-        document.getElementById('manualInput').value = content;
-        document.getElementById('ticketCode').innerText = content;
         confirmTicket(content)
     }
 
@@ -183,6 +180,10 @@
     }
 
     async function confirmTicket(ticketCode) {
+      console.log('QR Code detected: ', content);
+      document.getElementById('manualInput').value = content;
+      document.getElementById('ticketCode-success').innerText = content;
+      document.getElementById('ticketCode-failed').innerText = content;
       const data = new FormData()
       data.set('ticket_id', ticketCode)
       const url = "https://mb-booking-sit.awellness.sg/api/admin/campaign/campaigns/event/confirmation";
@@ -196,9 +197,9 @@
         }
         const json = await response.json();
         console.log(json);
-        showResultSuccess(ticketCode);  // Call the result display function
+        showResultSuccess();  // Call the result display function
       } catch (error) {
-        showResultFailed(ticketCode);  // Call the result display function
+        showResultFailed();  // Call the result display function
         console.error(error.message);
       }
     }
@@ -230,11 +231,10 @@
     });
 
     // Function to show the result after scanning
-    function showResultSuccess(ticketCode) {
+    function showResultSuccess() {
         document.getElementById('announcement').style.display = 'none';
         document.getElementById('manual-div').style.display = 'none';
         document.getElementById('result-success').style.display = 'flex';
-        document.getElementById('ticketCode-success').value = ticketCode;
         setTimeout(() => {
             document.getElementById('result-success').style.display = 'none';
             document.getElementById('manualInput').value = '';
@@ -243,11 +243,10 @@
         }, 3000);
     }
 
-    function showResultFailed(ticketCode) {
+    function showResultFailed() {
         document.getElementById('announcement').style.display = 'none';
         document.getElementById('manual-div').style.display = 'none';
         document.getElementById('result-failed').style.display = 'flex';
-        document.getElementById('ticketCode-failed').value = ticketCode;
         setTimeout(() => {
             document.getElementById('result-failed').style.display = 'none';
             document.getElementById('manualInput').value = '';
